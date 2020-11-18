@@ -2,7 +2,7 @@
 Чудо-скрипт, автоматизирующий заполнение одного спредшита.
 
 ## Инструкция по применению
-1. Скопируйте этот код (Protip: кликни три раза, чтобы выделить всё):
+1. Скопируйте этот код (**Protip**: кликни три раза, чтобы выделить всё):
 ```javascript
 !function(){var e,t,r,n,o=new Date,d=String(o.getFullYear()),l=String(o.getMonth()+1),a=String(o.getDate());e=(l=1===l.length?"0"+l:l)+"/"+(a=1===a.length?"0"+a:a)+"/"+d,t=window.location.hostname.replace(".emsow.com",""),r=document.querySelectorAll(".app-infopanel-field")[0].textContent.match(/Order:\d+/)[0].replace(/\D/g,"");var i=document.querySelectorAll(".app-infopanel-field")[6].textContent.replace("Referring: ","");n=document.querySelectorAll(".app-infopanel-field")[4].textContent.replace(/\D/g,"");for(var c=document.createElement("table"),p=0;p<n;p++){var m=document.querySelectorAll('div[id$="service_status_system-performed-bd"] .x-grid3-row div[qtip="Service ID"]')[p].textContent.replace("#",""),u=document.querySelectorAll('div[id$="service_status_system-performed-bd"] .x-grid3-row span[qtip^="Patient ID"]')[p].textContent,s=document.querySelectorAll('div[id$="service_status_system-performed-bd"] .x-grid3-row')[p].querySelectorAll('img[qtip="Report is not uploaded"] + b');s.map=[].map;for(var g=s.map(e=>e.textContent),v=0;v<g.length;v++){var f=g[v],w=document.createElement("tr");w.innerHTML=`<td>${e}</td><td>${t}</td><td>${r}</td><td>${m}</td><td>${u}</td><td>${f}</td><td>${i}</td>`,c.append(w)}}var S=window.open("about:blank","_blank");c.textContent?S.document.write(c.outerHTML):S.document.write("Ко всем стадиям в ордере уже приаттачены репорты."),S.document.close()}();
 ```
@@ -14,7 +14,7 @@
 ## Вопросы и ответы
 
 **Все ли стадии из ордера попадают в результирующую таблицу?**  
-Все, у которых нет репортов. Так что если в ордере есть неврологические стадии, их необходимо удалить из спредшита. В будущем сделаю хотя бы вывод предупреждения о наличии таких стадий в ордере.
+Все, у которых нет репортов, независимо от того, был заполнен для них воркшит или нет. Так что если в ордере есть, например, неврологические стадии, их необходимо удалить из спредшита. В будущем в таблицу будут попадать только стадии с заполненными воркшитами.
 
 **У меня не работает скрипт! Что делать?**  
 *Заполнять спредшит вручную, что ж ещё. Но сперва лучше всё же сообщить мне об ошибке - возможно там мелкий косяк, который исправляется за пару минут. А может, виноват апдейт эмсы. Сегодня не среда, случайно?*
