@@ -38,6 +38,7 @@
     // making the table
 
     var table = document.createElement('table');
+    table.setAttribute('style', 'font-family: Arial');
     var serviceContainerSelector = 'div[id$="service_status_system-performed-bd"] .x-grid3-row ';
 
     for (var i = 0; i < SERVICE_COUNT; i++) {
