@@ -5,7 +5,7 @@
 
 ## Инструкция по установке
 1. Установите браузерное расширение для подключения пользовательских скриптов Tampermonkey: https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en-US
-2. Перейдите по ссылке для установки скрипта: https://raw.githubusercontent.com/TimurAliev/Blitz-Worksheetz/main/Blitz_Worksheetz.js
+2. Перейдите по ссылке для установки скрипта: https://github.com/TimurAliev/Blitz-Worksheetz/raw/main/Blitz_Worksheetz.user.js
 
 В результате в тулбаре процессинга появится кнопка Blitz Worksheetz. Кликните её, чтобы сгенерировать таблицу для вставки в спредшит.
 ## Использование без установки (the old way)
