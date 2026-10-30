@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Blitz Worksheetz
-// @version      1.0
+// @version      1.1
 // @author       Timur Aliev
 // @match        https://*.emsow.com/*
 // ==/UserScript==
@@ -9,62 +9,69 @@
     'use strict';
 
     function init() {
-        if (/#module=app-orders.*/.test(location.hash)) {
-
-            // wait until the interface is built
-            setTimeout(function() {
-                if (!document.querySelector('#btn-blitz')) {
-                    var tbar = document.querySelector('.app-order-tools');
-
-                    var btns = tbar.querySelectorAll('.x-toolbar-cell');
-                    var btnLast = btns[btns.length - 1];
-                    
-                    var html =
-                    `<td class="x-toolbar-cell">
-                        <table cellspacing="0" class="x-btn x-btn-text-icon" style="width: auto;">
-                            <tbody class="x-btn-small x-btn-icon-small-left">
-                                <tr>
-                                    <td class="x-btn-tl">
-                                        <i>&nbsp;</i>
-                                    </td>
-                                    <td class="x-btn-tc"></td>
-                                    <td class="x-btn-tr">
-                                        <i>&nbsp;</i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="x-btn-ml">
-                                        <i>&nbsp;</i>
-                                    </td>
-                                    <td class="x-btn-mc">
-                                        <em class="x-unselectable" unselectable="on">
-                                            <button type="button" id="btn-blitz" class="x-btn-text icon-ext-xls">Blitz Worksheetz</button>
-                                        </em>
-                                    </td>
-                                    <td class="x-btn-mr">
-                                        <i>&nbsp;</i>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="x-btn-bl">
-                                        <i>&nbsp;</i>
-                                    </td>
-                                    <td class="x-btn-bc"></td>
-                                    <td class="x-btn-br">
-                                        <i>&nbsp;</i>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>`;
-
-                    btnLast.insertAdjacentHTML('afterend', html);
-
-                    var btnBlitz = tbar.querySelector('#btn-blitz');
-                    btnBlitz.addEventListener('click', blitz);
-                }
-            }, 5000);
+        if (init.observer) {
+            init.ensureButton();
+            return;
         }
+
+        function ensureButton() {
+            var params = new URLSearchParams(location.hash.slice(1));
+            if (params.get('module') !== 'app-orders') {
+                return;
+            }
+
+            var tbar = document.querySelector('.app-order-tools');
+            if (!tbar || tbar.querySelector('#btn-blitz')) {
+                return;
+            }
+
+            var btns = tbar.querySelectorAll('.x-toolbar-cell');
+            var btnLast = btns[btns.length - 1];
+            if (!btnLast) {
+                return;
+            }
+
+            btnLast.insertAdjacentHTML('afterend', `
+            <td class="x-toolbar-cell">
+                <table cellspacing="0" class="x-btn x-btn-text-icon"
+                       style="width: auto;">
+                    <tbody class="x-btn-small x-btn-icon-small-left">
+                        <tr>
+                            <td class="x-btn-tl"><i>&nbsp;</i></td>
+                            <td class="x-btn-tc"></td>
+                            <td class="x-btn-tr"><i>&nbsp;</i></td>
+                        </tr>
+                        <tr>
+                            <td class="x-btn-ml"><i>&nbsp;</i></td>
+                            <td class="x-btn-mc">
+                                <em class="x-unselectable" unselectable="on">
+                                    <button type="button" id="btn-blitz"
+                                            class="x-btn-text icon-ext-xls">Blitz Worksheetz</button>
+                                </em>
+                            </td>
+                            <td class="x-btn-mr"><i>&nbsp;</i></td>
+                        </tr>
+                        <tr>
+                            <td class="x-btn-bl"><i>&nbsp;</i></td>
+                            <td class="x-btn-bc"></td>
+                            <td class="x-btn-br"><i>&nbsp;</i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        `);
+
+            tbar.querySelector('#btn-blitz').addEventListener('click', blitz);
+        }
+
+        init.ensureButton = ensureButton;
+        init.observer = new MutationObserver(ensureButton);
+        init.observer.observe(document.documentElement, {
+            childList: true,
+            subtree: true
+        });
+
+        ensureButton();
     }
 
     function blitz() {
